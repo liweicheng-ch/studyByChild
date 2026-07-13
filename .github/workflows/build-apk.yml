@@ -7,33 +7,40 @@ on:
 
 jobs:
   build:
-    # ubuntu-22.04 有 Node 20 原生支持，兼容 setup-android
     runs-on: ubuntu-22.04
 
     steps:
-      - name: 拉取代码
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: 设置 Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      - name: 安装 Java + Node + Android SDK
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openjdk-17-jdk nodejs npm 2>&1 | tail -3
+          java -version 2>&1 | head -1
+          node --version
 
-      - name: 设置 Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: 安装 Android SDK
-        uses: android-actions/setup-android@v3
+      - name: 安装 Android cmdline-tools
+        run: |
+          mkdir -p $HOME/android
+          cd /tmp
+          curl -sLo cmdline-tools.zip \
+            "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
+          unzip -qo cmdline-tools.zip
+          mv cmdline-tools $HOME/android/cmdline-tools-latest
+          echo "ANDROID_HOME=$HOME/android" >> $GITHUB_ENV
+          echo "$HOME/android/cmdline-tools-latest/bin" >> $GITHUB_PATH
 
       - name: 安装 SDK 组件
         run: |
-          sdkmanager "platforms;android-34" "build-tools;34.0.0" || true
+          yes | $HOME/android/cmdline-tools-latest/bin/sdkmanager --licenses > /dev/null 2>&1
+          $HOME/android/cmdline-tools-latest/bin/sdkmanager \
+            "platform-tools" \
+            "platforms;android-34" \
+            "build-tools;34.0.0" 2>&1 | tail -5
+          echo "SDK_HOME=$HOME/android" >> $GITHUB_ENV
 
       - name: 安装 Cordova
-        run: npm install -g cordova
+        run: sudo npm install -g cordova
 
       - name: 添加 Android 平台
         run: cordova platform add android@12
@@ -43,14 +50,13 @@ jobs:
 
       - name: 构建 APK
         run: |
-          cordova build android
-          echo "=== 查找 APK ==="
-          find . -name "*.apk" || echo "无APK"
+          cordova build android --verbose 2>&1 | tail -30
+          echo "=== APK查找 ==="
+          find . -name "*.apk" 2>/dev/null || echo "无APK"
 
       - name: 上传 APK
         uses: actions/upload-artifact@v4
         with:
           name: 拼音小乐园-APK
-          path: |
-            platforms/android/app/build/outputs/apk/**/*.apk
+          path: "platforms/android/app/build/outputs/apk/**/*.apk"
           if-no-files-found: warn
