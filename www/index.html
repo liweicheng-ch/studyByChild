@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>拼音小乐园 - 幼小衔接拼音学习</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="app-title">🔤 拼音<span>小乐园</span></div>
+      <div class="header-stats" id="header-stats">⭐ 幼小衔接</div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- 搜索 -->
+    <input type="text" class="search-box" placeholder="🔍 搜索拼音..." oninput="searchFilter()">
+
+    <!-- 分类Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-cat="initials">🔤 声母</button>
+      <button class="tab" data-cat="simple_finals">🎵 单韵母</button>
+      <button class="tab" data-cat="compound_finals">🎶 复韵母</button>
+      <button class="tab" data-cat="whole_syllables">📖 整体认读</button>
+    </div>
+
+    <!-- 进度 -->
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner"></div>
+    </div>
+    <div class="progress-text">已学 0/63</div>
+
+    <!-- 分类信息 + 操作栏 -->
+    <div class="cat-info">
+      <div class="cat-name">声母 (23个)</div>
+      <div class="cat-count">23 个</div>
+    </div>
+
+    <div class="mode-bar">
+      <button class="play-all-btn" onclick="playAll()">
+        ▶ 全部朗读
+      </button>
+      <button class="mode-btn test-mode-btn" onclick="startTest()">
+        ✏️ 小测验
+      </button>
+      <button class="mode-btn" onclick="stopPlay()">
+        ⏹ 停止
+      </button>
+    </div>
+
+    <!-- 测试面板 -->
+    <div class="test-panel"></div>
+
+    <!-- 拼音网格 -->
+    <div class="grid"></div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast"></div>
+
+  <script src="js/pinyin.js"></script>
+</body>
+</html>

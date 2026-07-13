@@ -1,0 +1,16 @@
+{
+  "name": "com.pinyin.learning",
+  "displayName": "拼音小乐园",
+  "version": "1.0.0",
+  "description": "幼小衔接拼音读写学习工具 - 点击拼音即发音",
+  "main": "index.js",
+  "scripts": {
+    "build": "cordova build android --release"
+  },
+  "keywords": ["ecosystem:cordova", "pinyin", "education", "kids"],
+  "author": "拼音小乐园",
+  "license": "MIT",
+  "cordova": {
+    "platforms": []
+  }
+}
