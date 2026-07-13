@@ -7,7 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # ubuntu-22.04 有 Node 20 原生支持，兼容 setup-android
+    runs-on: ubuntu-22.04
 
     steps:
       - name: 拉取代码
@@ -19,19 +20,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 设置 Node.js 22
+      - name: 设置 Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
 
       - name: 安装 Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: 安装需要的 SDK 组件
+      - name: 安装 SDK 组件
         run: |
-          sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools" || true
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "SDK installed"
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" || true
 
       - name: 安装 Cordova
         run: npm install -g cordova
@@ -42,21 +41,16 @@ jobs:
       - name: 安装项目依赖
         run: npm install
 
-      - name: 构建 APK (debug)
+      - name: 构建 APK
         run: |
-          cordova build android --verbose
+          cordova build android
           echo "=== 查找 APK ==="
-          find . -name "*.apk" 2>/dev/null
-
-      - name: 收集 APK
-        run: |
-          mkdir -p apk-output
-          find . -name "*.apk" -exec cp {} apk-output/ \; 2>/dev/null || true
-          ls -la apk-output/ || echo "无APK文件"
+          find . -name "*.apk" || echo "无APK"
 
       - name: 上传 APK
         uses: actions/upload-artifact@v4
         with:
           name: 拼音小乐园-APK
-          path: apk-output/*.apk
+          path: |
+            platforms/android/app/build/outputs/apk/**/*.apk
           if-no-files-found: warn
