@@ -7,54 +7,43 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: 安装 Java + Node + Android SDK
+      - name: Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Android SDK (fork)
+        uses: mindrunner/android-sdk-setup-action@v1
+        with:
+          accept-licenses: true
+
+      - name: 看看环境
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq openjdk-17-jdk nodejs npm 2>&1 | tail -3
-          java -version 2>&1 | head -1
-          node --version
+          java -version
+          node -v
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls $ANDROID_HOME/ 2>/dev/null || echo "no SDK"
 
-      - name: 安装 Android cmdline-tools
+      - name: npm install
         run: |
-          mkdir -p $HOME/android
-          cd /tmp
-          curl -sLo cmdline-tools.zip \
-            "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
-          unzip -qo cmdline-tools.zip
-          mv cmdline-tools $HOME/android/cmdline-tools-latest
-          echo "ANDROID_HOME=$HOME/android" >> $GITHUB_ENV
-          echo "$HOME/android/cmdline-tools-latest/bin" >> $GITHUB_PATH
+          npm install -g cordova
+          cordova platform add android
 
-      - name: 安装 SDK 组件
-        run: |
-          yes | $HOME/android/cmdline-tools-latest/bin/sdkmanager --licenses > /dev/null 2>&1
-          $HOME/android/cmdline-tools-latest/bin/sdkmanager \
-            "platform-tools" \
-            "platforms;android-34" \
-            "build-tools;34.0.0" 2>&1 | tail -5
-          echo "SDK_HOME=$HOME/android" >> $GITHUB_ENV
+      - name: 构建
+        run: cordova build android 2>&1
 
-      - name: 安装 Cordova
-        run: sudo npm install -g cordova
-
-      - name: 添加 Android 平台
-        run: cordova platform add android@12
-
-      - name: 安装项目依赖
-        run: npm install
-
-      - name: 构建 APK
-        run: |
-          cordova build android --verbose 2>&1 | tail -30
-          echo "=== APK查找 ==="
-          find . -name "*.apk" 2>/dev/null || echo "无APK"
-
-      - name: 上传 APK
+      - name: 上传
         uses: actions/upload-artifact@v4
         with:
           name: 拼音小乐园-APK
