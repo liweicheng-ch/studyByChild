@@ -7,10 +7,20 @@
   "scripts": {
     "build": "cordova build android --release"
   },
-  "keywords": ["ecosystem:cordova", "pinyin", "education", "kids"],
+  "keywords": [
+    "ecosystem:cordova",
+    "pinyin",
+    "education",
+    "kids"
+  ],
   "author": "拼音乐园",
   "license": "MIT",
   "cordova": {
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
+  },
+  "devDependencies": {
+    "cordova-android": "^10.1.2"
   }
 }

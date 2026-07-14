@@ -2,7 +2,7 @@ name: 打包拼音乐园APK
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
