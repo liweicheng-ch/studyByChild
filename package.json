@@ -1,0 +1,16 @@
+{
+  "name": "com.pinyin.learner",
+  "displayName": "拼音乐园",
+  "version": "1.0.0",
+  "description": "幼小衔接拼音学习 - 每页一个拼音，点击发音",
+  "main": "index.js",
+  "scripts": {
+    "build": "cordova build android --release"
+  },
+  "keywords": ["ecosystem:cordova", "pinyin", "education", "kids"],
+  "author": "拼音乐园",
+  "license": "MIT",
+  "cordova": {
+    "platforms": []
+  }
+}

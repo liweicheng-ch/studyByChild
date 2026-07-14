@@ -1,0 +1,156 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.page.active { display: flex; }
+
+/* Header */
+.header {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  padding: 18px 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  font-size: 20px;
+  padding: 4px 12px 4px 0;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.header-title { flex:1; text-align:center; padding-right:40px; }
+
+/* Category page */
+.subtitle {
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  padding: 30px 20px 20px;
+  font-size: 16px;
+}
+
+.cat-list {
+  padding: 10px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cat-btn {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  transition: transform 0.15s;
+}
+.cat-btn:active { transform: scale(0.97); }
+
+.cat-icon { font-size: 36px; }
+.cat-name { font-size: 20px; font-weight: 700; flex:1; }
+.cat-count { font-size: 14px; color: #999; }
+
+/* Player page */
+.player-area {
+  flex:1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+}
+
+.pinyin-display {
+  background: rgba(255,255,255,0.95);
+  border-radius: 30px;
+  padding: 40px 30px;
+  text-align: center;
+  flex:1;
+  max-width: 320px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.pinyin-display:active { transform: scale(0.95); }
+.pinyin-display.playing { animation: bounce 0.5s ease; }
+
+@keyframes bounce {
+  0%{transform:scale(1)} 25%{transform:scale(1.12)} 50%{transform:scale(0.96)} 75%{transform:scale(1.06)} 100%{transform:scale(1)}
+}
+
+.pinyin-big {
+  font-size: 80px;
+  font-weight: 800;
+  color: #667eea;
+  line-height: 1.2;
+}
+
+.pinyin-char {
+  font-size: 24px;
+  color: #666;
+  margin-top: 8px;
+}
+
+.pinyin-type {
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 6px;
+}
+
+.tap-hint {
+  font-size: 13px;
+  color: #bbb;
+  margin-top: 20px;
+}
+
+.nav-arrow {
+  font-size: 48px;
+  color: rgba(255,255,255,0.6);
+  padding: 20px 8px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.nav-arrow:active { color: #fff; }
+
+/* Progress */
+.progress-row {
+  text-align: center;
+  padding: 8px;
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+}
+
+.progress-bar {
+  margin: 0 40px 30px;
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  width: 0%;
+}

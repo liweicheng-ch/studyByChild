@@ -1,0 +1,50 @@
+name: 打包拼音乐园APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Android SDK
+        uses: mindrunner/android-sdk-setup-action@v1
+        with:
+          accept-licenses: true
+
+      - name: 环境检查
+        run: |
+          java -version
+          node -v
+          echo "ANDROID_HOME=$ANDROID_HOME"
+
+      - name: 安装 Cordova + 添加 Android 平台
+        run: |
+          npm install -g cordova
+          cordova platform add android
+
+      - name: 构建 Debug APK
+        run: cordova build android
+
+      - name: 上传 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: 拼音乐园-APK
+          path: "platforms/android/app/build/outputs/apk/**/*.apk"
+          if-no-files-found: error

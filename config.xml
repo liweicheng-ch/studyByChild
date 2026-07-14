@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.pinyin.learner" version="1.0.0"
+        xmlns="http://www.w3.org/ns/widgets"
+        xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>拼音乐园</name>
+    <description>
+        幼小衔接拼音学习。分类选择，每页一个拼音，点击发音。
+    </description>
+    <author email="" href="">
+        拼音乐园
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <access origin="*" />
+    <platform name="android">
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="34" />
+        <preference name="Fullscreen" value="true" />
+        <preference name="Orientation" value="portrait" />
+    </platform>
+    <icon src="www/img/icon.png" />
+</widget>
